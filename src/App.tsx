@@ -5,8 +5,10 @@ import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import ViewBoard from "./Components/ViewBoard";
 import {calcResults, generateField, isGameFinished} from "./utils";
-import {AppState, ChangeColor, Field, Player} from "./types";
-import ViewDialog from "./Components/ViewDialog";
+import {AppState, ChangeColor, Player} from "./types";
+import Modal from "./Components/Dialog/Modal";
+import ViewNewGameForm from "./Components/ViewNewGameForm";
+import Content from "./Components/Dialog/Content";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -31,7 +33,6 @@ const useStyles = makeStyles(theme => ({
 export default function App() {
 
     const initialState = {
-        field: {} as Field,
         fieldSize: 3,
         fieldSizeError: '',
         currentPlayer: Player.One,
@@ -40,10 +41,9 @@ export default function App() {
             win: '',
             score: [0, 0],
         },
-        dialogOpen: false,
+        dialogOpen: true,
+        isNewGame: true,
     };
-
-    initialState.field = generateField(initialState.fieldSize);
 
     const [state, setState ] = useState<AppState>(initialState);
 
@@ -55,14 +55,17 @@ export default function App() {
                 currentPlayer: player === Player.One ? Player.Two : Player.One,
             });
 
-            if (isGameFinished(state.field)) {
-                const result = calcResults(state.field);
+            if (state.field) {
+                if (isGameFinished(state.field)) {
+                    const result = calcResults(state.field);
 
-                setState({
-                    ...state,
-                    dialogOpen: true,
-                    result
-                })
+                    setState({
+                        ...state,
+                        dialogOpen: true,
+                        isNewGame: false,
+                        result,
+                    })
+                }
             }
         }
     };
@@ -93,28 +96,45 @@ export default function App() {
 
     const classes = useStyles();
 
-    const { result, dialogOpen, fieldSizeError, fieldSize } = state;
+    const { result, dialogOpen, fieldSizeError, fieldSize, isNewGame, field, currentPlayer } = state;
 
     return (
         <Container component="main">
             <CssBaseline />
             <div className={classes.paper}>
-                <Typography component="h1" variant="h5">
-                    Squares
-                </Typography>
-                <ViewBoard
-                    field={state.field}
-                    currentPlayer={state.currentPlayer}
-                    changeColor={changeColor}
-                />
-                <ViewDialog
-                    startGame={startGame}
-                    changeFieldSize={changeFieldSize}
+                {
+                    field &&
+                    <>
+                        <Typography component="h1" variant="h5">
+                            Squares
+                        </Typography>
+                        <ViewBoard
+                            field={field}
+                            currentPlayer={currentPlayer}
+                            changeColor={changeColor}
+                        />
+                    </>
+                }
+                <Modal
+                    title={ !isNewGame ? 'That\'s all folks!' : 'New game' }
                     dialogOpen={dialogOpen}
-                    result={result}
-                    fieldSizeError={fieldSizeError}
-                    fieldSize={fieldSize}
-                    />
+                    startGame={startGame}
+                    content={
+                        <Content
+                            isNewGame={isNewGame}
+                            result={result}
+                        />
+                    }
+                    newGameForm={
+                        <ViewNewGameForm
+                            startGame={startGame}
+                            changeFieldSize={changeFieldSize}
+                            fieldSizeError={fieldSizeError}
+                            fieldSize={fieldSize}
+                        />
+                    }
+                >
+                </Modal>
             </div>
         </Container>
     )

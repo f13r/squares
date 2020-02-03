@@ -1,5 +1,5 @@
 export interface AppState {
-    field: Field;
+    field?: Field;
     fieldSize: number;
     fieldSizeError: string;
     currentPlayer: Player;
@@ -9,6 +9,7 @@ export interface AppState {
         score: number[];
     };
     dialogOpen: boolean;
+    isNewGame: boolean;
 }
 
 export interface Row extends Array<Square> {}
