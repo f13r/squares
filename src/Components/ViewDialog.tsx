@@ -1,6 +1,6 @@
 import React from "react";
 import Dialog from "@material-ui/core/Dialog";
-import {DialogContentText, DialogTitle} from "@material-ui/core";
+import {DialogContentText, DialogTitle, DialogActions} from "@material-ui/core";
 import DialogContent from "@material-ui/core/DialogContent";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
@@ -37,9 +37,11 @@ const ViewDialog: DialogComponent = (props) => {
                         fullWidth
                         inputProps={{min: "2", max: "8", step: "1"}}
                     />
-                    <Button onClick={startGame} color="primary">
-                        Start over!
-                    </Button>
+                    <DialogActions>
+                        <Button onClick={startGame} color="primary">
+                            Start over!
+                        </Button>
+                    </DialogActions>
                 </DialogContentText>
             </DialogContent>
         </Dialog>
