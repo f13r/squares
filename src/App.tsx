@@ -6,11 +6,7 @@ import Container from '@material-ui/core/Container';
 import ViewBoard from "./Components/ViewBoard";
 import {calcResults, generateField, isGameFinished} from "./utils";
 import {AppState, ChangeColor, Field, Player} from "./types";
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from "@material-ui/core/DialogContent";
-import {DialogContentText, DialogTitle} from "@material-ui/core";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
+import ViewDialog from "./Components/ViewDialog";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -97,6 +93,8 @@ export default function App() {
 
     const classes = useStyles();
 
+    const { result, dialogOpen, fieldSizeError, fieldSize } = state;
+
     return (
         <Container component="main">
             <CssBaseline />
@@ -104,39 +102,19 @@ export default function App() {
                 <Typography component="h1" variant="h5">
                     Squares
                 </Typography>
-                <ViewBoard field={state.field} currentPlayer={state.currentPlayer} changeColor={changeColor}/>
-                <Dialog
-                    onClose={startGame}
-                    open={state.dialogOpen}
-                >
-                    <DialogTitle>That's all folks!</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText>
-                            <div style={{color: 'green'}}>Player 1 got {state.result.score[0]} squares </div>
-                            <div style={{color: 'red'}}>Player 2 got {state.result.score[1]} squares </div>
-                            <br/>
-                            <div>
-                                {state.result.tie && <div>It's a tie! Try again to find out who's better</div>}
-                                {!state.result.tie && <div><b>Congratulations! {state.result.win} wins!</b></div>}
-                            </div>
-                            <br/>
-                            <TextField
-                                margin="dense"
-                                label="Field size"
-                                type="number"
-                                error={!!state.fieldSizeError.length}
-                                value={state.fieldSize}
-                                onChange={changeFieldSize}
-                                helperText={state.fieldSizeError}
-                                fullWidth
-                                inputProps={{min: "2", max: "8", step: "1"}}
-                            />
-                            <Button onClick={startGame} color="primary">
-                                Start over!
-                            </Button>
-                        </DialogContentText>
-                    </DialogContent>
-                </Dialog>
+                <ViewBoard
+                    field={state.field}
+                    currentPlayer={state.currentPlayer}
+                    changeColor={changeColor}
+                />
+                <ViewDialog
+                    startGame={startGame}
+                    changeFieldSize={changeFieldSize}
+                    dialogOpen={dialogOpen}
+                    result={result}
+                    fieldSizeError={fieldSizeError}
+                    fieldSize={fieldSize}
+                    />
             </div>
         </Container>
     )
