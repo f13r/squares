@@ -32,7 +32,7 @@ const ViewSquare: SquareComponent = (props) => {
 
     return (
         <Grid item>
-            <Paper className={classes.paper} onClick={changeColor(square, currentPlayer)} style={{backgroundColor: color}}/>
+            <Paper className={classes.paper} onClick={changeColor(square, currentPlayer)} style={{backgroundColor: color, cursor: 'pointer'}}/>
         </Grid>
     )
 };
