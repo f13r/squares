@@ -1,32 +1,40 @@
-import React, {FC} from "react";
-import {ChangeColor, Player, Square} from "../types";
+import React from "react";
+import {Grid, Paper} from "@material-ui/core";
+import {makeStyles} from "@material-ui/core/styles";
+import {SquareComponent} from "./types";
 
-export interface Props {
-    square: Square;
-    // changeColor: ChangeColor;
-    // currentPlayer: Player;
-}
+const useStyles = makeStyles(theme => ({
+    paper: {
+        padding: theme.spacing(6),
+        textAlign: 'center',
+        color: theme.palette.text.secondary,
+    },
+}));
 
-export type Component = FC<Props>;
+const ViewSquare: SquareComponent = (props) => {
 
-const ViewSquare: Component = ({square}) => {
+    const classes = useStyles();
+
+    const { square, currentPlayer, changeColor } = props;
 
     let color = 'grey';
 
     switch (square.owner) {
         case 0:
-            color = 'red';
+            color = 'green';
             break;
         case 1:
-            color = 'green';
+            color = 'red';
             break;
         default:
             break;
     }
 
     return (
-        <div className="square" style={{backgroundColor: color}}/>
-    );
+        <Grid item>
+            <Paper className={classes.paper} onClick={changeColor(square, currentPlayer)} style={{backgroundColor: color}}/>
+        </Grid>
+    )
 };
 
 export default ViewSquare;

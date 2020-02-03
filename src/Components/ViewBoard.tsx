@@ -1,19 +1,11 @@
-import React, {FC} from 'react';
+import React from 'react';
 
 import {Grid} from "@material-ui/core";
-import {ChangeColor, Field, Player} from "../../types";
 import ViewSquare from "./ViewSquare";
+import {BoardComponent} from "./types";
 
 
-export interface Props {
-    field: Field;
-    currentPlayer: Player;
-    changeColor: ChangeColor;
-}
-
-export type Component = FC<Props>;
-
-const ViewBoard: Component = (props) => {
+const ViewBoard: BoardComponent = (props) => {
 
     const { field, currentPlayer, changeColor } = props;
 

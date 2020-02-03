@@ -3,9 +3,9 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import ViewBoard from "./Components/Board/ViewBoard";
+import ViewBoard from "./Components/ViewBoard";
 import {calcResults, generateField, isGameFinished} from "./utils";
-import {ChangeColor, Field, Player} from "./types";
+import {AppState, ChangeColor, Field, Player} from "./types";
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from "@material-ui/core/DialogContent";
 import {DialogContentText, DialogTitle} from "@material-ui/core";
@@ -31,18 +31,6 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export interface State {
-    field: Field;
-    fieldSize: number;
-    fieldSizeError: string;
-    currentPlayer: Player;
-    result: {
-        tie: boolean;
-        win: string;
-        score: number[];
-    };
-    dialogOpen: boolean;
-}
 
 export default function App() {
 
@@ -61,7 +49,7 @@ export default function App() {
 
     initialState.field = generateField(initialState.fieldSize);
 
-    const [state, setState ] = useState<State>(initialState);
+    const [state, setState ] = useState<AppState>(initialState);
 
     const changeColor: ChangeColor = (square, player) => () => {
         if (typeof square.owner === 'undefined') {
