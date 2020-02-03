@@ -1,3 +1,16 @@
+export interface AppState {
+    field: Field;
+    fieldSize: number;
+    fieldSizeError: string;
+    currentPlayer: Player;
+    result: {
+        tie: boolean;
+        win: string;
+        score: number[];
+    };
+    dialogOpen: boolean;
+}
+
 export interface Row extends Array<Square> {}
 export interface Field extends Array<Row> {}
 
